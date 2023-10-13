@@ -2,7 +2,7 @@
 //this is a confusing concept in JS, but the basic idea is that it’s a special keyword bound to the current 
 //object context. In the example above, this references the Scene object.
 
-class Menu extends Phaser.Scene {
+class Play extends Phaser.Scene {
     constructor() {
       super("playScene");
     }

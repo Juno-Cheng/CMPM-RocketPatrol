@@ -13,6 +13,3 @@ let game = new Phaser.Game(config);
 // set UI sizes
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
-
-//Green UI
-this.add.rectangle(0, borderUISize+borderPadding, game.config.width)

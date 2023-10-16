@@ -26,7 +26,7 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
 
         //In Play.js's create() method, add the following code above the code that places the rectangular borders:
-        
+        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
 
         //White Borders: 
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0); 
@@ -35,4 +35,10 @@ class Play extends Phaser.Scene {
         //game.config.width - borderUISize Make space for the border
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
     }
+
+    update() {
+        //When you adjust tilePositionX or tilePositionY, 
+        //you're essentially sliding the texture around within the confines of the tile sprite's dimensions (which don't change). 
+        this.starfield.tilePositionX -= 4;
+      }
 } 

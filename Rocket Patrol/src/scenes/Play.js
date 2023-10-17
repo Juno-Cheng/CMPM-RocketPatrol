@@ -34,11 +34,13 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
         //game.config.width - borderUISize Make space for the border
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+
+        // add rocket (p1)
+        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
     }
 
     update() {
-        //When you adjust tilePositionX or tilePositionY, 
-        //you're essentially sliding the texture around within the confines of the tile sprite's dimensions (which don't change). 
+        //When you adjust tilePositionX or tilePositionY, you're essentially sliding the texture around within the confines of the tile sprite's dimensions (which don't change). 
         this.starfield.tilePositionX -= 4;
       }
 } 

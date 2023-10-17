@@ -43,10 +43,13 @@ class Play extends Phaser.Scene {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        this.p1Rocket.update(); //Runs rocket update
     }
 
     update() {
-        //When you adjust tilePositionX or tilePositionY, you're essentially sliding the texture around within the confines of the tile sprite's dimensions (which don't change). 
+        //When you adjust tilePositionX or tilePositionY, you're essentially sliding the texture 
+        //around within the confines of the tile sprite's dimensions (which don't change). 
+        //
         this.starfield.tilePositionX -= 4;
       }
 } 

@@ -21,12 +21,13 @@ class Play extends Phaser.Scene {
     create() {
         console.log("Play scene activated");
         this.add.text(20, 20, "Rocket Patrol Play");
-        //Green UI - Starting Point (0, borderUISize + borderPadding), X Leng (Width), Y Height (borderUISize * 2) 
-        //.setOrigin is Weird - (0,0) sets to topLeft
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
 
         //In Play.js's create() method, add the following code above the code that places the rectangular borders:
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+
+        //Green UI - Starting Point (0, borderUISize + borderPadding), X Leng (Width), Y Height (borderUISize * 2) 
+        //.setOrigin is Weird - (0,0) sets to topLeft
+        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
 
         //White Borders: 
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0); 
@@ -38,7 +39,7 @@ class Play extends Phaser.Scene {
         // add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
 
-        //Add ships:
+        // add spaceships (x3)
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
@@ -64,16 +65,6 @@ class Play extends Phaser.Scene {
         this.ship03.update();
       }
 
-      checkCollision(rocket, ship) {
-        // simple AABB checking
-        if (rocket.x < ship.x + ship.width && 
-          rocket.x + rocket.width > ship.x && 
-          rocket.y < ship.y + ship.height &&
-          rocket.height + rocket.y > ship. y) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-      
+    
+
 } 

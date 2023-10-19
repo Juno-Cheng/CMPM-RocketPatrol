@@ -91,23 +91,24 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-
-        //Check key input for restart
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
-        //When you adjust tilePositionX or tilePositionY, you're essentially sliding the texture 
-        //around within the confines of the tile sprite's dimensions (which don't change). 
-        this.starfield.tilePositionX -= 4;
-        
-        if (!this.gameOver) {//Stops game from moving if game over
-            this.p1Rocket.update();         // update rocket sprite
-            this.ship01.update();          
+
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.scene.start("menuScene");
+        }
+
+        this.starfield.tilePositionX -= 4;  //Shifts Background texture
+
+        if(!this.gameOver) { //Stop Objects from Moving
+            this.p1Rocket.update();             
+             this.ship01.update();               
             this.ship02.update();
             this.ship03.update();
-        } 
+        }
 
-        // check collisions
+        // Collison
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03);
@@ -120,7 +121,7 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
-      }
+    }
 
     checkCollision(rocket, ship) {
         // simple AABB checking

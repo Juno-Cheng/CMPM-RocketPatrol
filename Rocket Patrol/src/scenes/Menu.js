@@ -23,16 +23,38 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         
-        // show menu text
+        // Text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
 
-        // define keys
+        // Keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     }
+
+    update() {
+        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+          // Easy mode
+          game.settings = {
+            spaceshipSpeed: 3,
+            gameTimer: 60000    
+          }
+          this.sound.play('sfx_select');
+          this.scene.start("playScene");    
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+          // Hard mode
+          game.settings = {
+            spaceshipSpeed: 4,
+            gameTimer: 45000    
+          }
+          this.sound.play('sfx_select');
+          this.scene.start("playScene");    
+        }
+      }
+
 } 
 

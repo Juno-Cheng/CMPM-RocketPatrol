@@ -57,7 +57,25 @@ class Play extends Phaser.Scene {
         // Add Animations - https://rexrainbow.github.io/phaser3-rex-notes/docs/site/animation/#add-animation
         this.anims.create({key:'explode', frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
         frameRate: 30})
+
+        // Initialize score
+        sthis.p1Score = 0;
         
+        // Display score
+        let scoreConfig = { //Setting basically
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+              top: 5,
+              bottom: 5,
+            },
+            fixedWidth: 100
+          }
+        // Adds text add (x, y ,text, setting)
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
     }
 
     update() {
@@ -75,15 +93,15 @@ class Play extends Phaser.Scene {
         // check collisions
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
-            this.ship03.reset();
+            this.shipExplode(this.ship03);
         }
         if (this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
-            this.ship02.reset();
+            this.shipExplode(this.ship02);
         }
         if (this.checkCollision(this.p1Rocket, this.ship01)) {
             this.p1Rocket.reset();
-            this.ship01.reset();
+            this.shipExplode(this.ship01);
         }
       }
 

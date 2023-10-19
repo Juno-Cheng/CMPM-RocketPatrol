@@ -101,4 +101,19 @@ class Play extends Phaser.Scene {
         }
     }
 
+    shipExplode(ship){
+        // temporarily hide ship
+        ship.alpha = 0;
+
+        //Play animations
+        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0); // create explosion sprite at ship's position - Creates object
+        boom.anims.play('explode');   // play explode animation
+        boom.on('animationcomplete', () => {    // callback after anim completes - event listener
+            ship.reset();                         // reset ship position
+            ship.alpha = 1;                       // make ship visible again
+            boom.destroy();                       // remove explosion sprite
+          });       
+
+    }
+
 } 

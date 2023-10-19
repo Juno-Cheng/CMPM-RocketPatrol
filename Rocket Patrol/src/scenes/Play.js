@@ -131,7 +131,10 @@ class Play extends Phaser.Scene {
             ship.alpha = 1;                       // make ship visible again
             boom.destroy();                       // remove explosion sprite
           });       
-
+        
+        //Score
+        this.p1Score += ship.points;
+        this.scoreLeft.text = this.p1Rocket;
     }
 
 } 

@@ -15,6 +15,8 @@ class Play extends Phaser.Scene {
 
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('ufo', './assets/UFO.png');
+        this.load.image('spark', './assets/spark.png');
         this.load.image('starfield', './assets/starfield.png');
 
         // Load a spritesheet 'explosion' and define each frame's dimensions and sequence within the larger image file.
@@ -23,6 +25,13 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        //Particles
+
+        
+        //Clock
+        this.initialTime = game.settings.gameTimer; // 60 seconds in milliseconds, can be adjusted.
+        this.remainingTime = this.initialTime;
+
         console.log("Play scene activated");
         this.add.text(20, 20, "Rocket Patrol Play");
 
@@ -47,6 +56,7 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
+        this.ship04 = new UFO(this, game.config.width, borderUISize*6 + borderPadding * 8, 'ufo', 0, 60).setOrigin(0,0);
 
         // Define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -80,17 +90,19 @@ class Play extends Phaser.Scene {
         // GAME OVER flag
         this.gameOver = false;
 
-        // 60-second play clock
-        scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(60000, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
-            this.gameOver = true;
-        }, null, this);
+        this.emitter = this.add.particles(0, 0, 'spark', {
+            lifespan: 4000,
+            speed: { min: 200, max: 350 },
+            scale: { start: 2, end: 0 },
+            rotate: { start: 0, end: 360 },
+            gravityY: 200,
+            emitting: false
+        });
+
 
     }
 
-    update() {
+    update(time, delta) {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
@@ -103,12 +115,25 @@ class Play extends Phaser.Scene {
 
         if(!this.gameOver) { //Stop Objects from Moving
             this.p1Rocket.update();             
-             this.ship01.update();               
+            this.ship01.update();               
             this.ship02.update();
             this.ship03.update();
+            this.ship04.update();
+
+            this.remainingTime -= delta;
+
+            // When the remaining time reaches zero (or below), end the game.
+            if (this.remainingTime <= 0) {
+                this.endGame();
+            }
+
         }
 
         // Collison
+        if (this.checkCollision(this.p1Rocket, this.ship04)) {
+            this.p1Rocket.reset();
+            this.shipExplode(this.ship04);
+        }
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03);
@@ -150,9 +175,36 @@ class Play extends Phaser.Scene {
             boom.destroy();                       // remove explosion sprite
           });       
 
-          this.p1Score += ship.points;
+        
+        console.log("Particles")
+        this.emitter.start();
+        this.emitter.explode(16, ship.x, ship.y);
+        this.emitter.emitParticleAt(ship.x, ship.y)
+
+        this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score; 
         this.sound.play('sfx_explosion');
+        this.remainingTime += 5000;
+    }
+
+    endGame(){
+
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+
+        this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
+        this.gameOver = true;
     }
 
 } 
